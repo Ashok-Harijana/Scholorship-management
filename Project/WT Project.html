@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Management System</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header img {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 100px; /* Increased logo size */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        /* Hide all sections by default */
+        section {
+            display: none;
+        }
+
+        /* Show home section by default */
+        #home {
+            display: block;
+        }
+
+        /* Dashboard styling */
+        #dashboardSummary,
+        #applicationStatus,
+        #notifications,
+        #recentUpdates,
+        #dashboardActions {
+            margin: 20px 0;
+        }
+
+        #dashboardSummary ul,
+        #notifications ul,
+        #recentUpdates ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #dashboardSummary ul li,
+        #notifications ul li,
+        #recentUpdates ul li {
+            margin: 10px 0;
+        }
+
+        /* Login section styling */
+        #loginForm {
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        #loginForm input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #loginForm input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #loginMessage {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="data:image/png;base64,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" alt="Logo" style="width: 100px; height: auto;">
+        <h1>Scholarship Management Portal</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('scholarships')">Scholarships</a></li>
+                <li><a href="#" onclick="showSection('apply')">Apply</a></li>
+                <li><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                <li><a href="#" onclick="showSection('login')">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home">
+            <h2>Welcome to the Scholarship Management Portal</h2>
+            <p>Your gateway to various scholarships. Explore, apply, and achieve your educational goals!</p>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login">
+            <h2>Login</h2>
+            <div id="loginForm">
+                <form id="loginFormElement">
+                    <label for="email">Email:</label>
+                    <input type="email" id="loginEmail" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+
+                    <input type="submit" value="Login">
+                </form>
+                <p id="loginMessage"></p>
+            </div>
+        </section>
+
+        <!-- Scholarships Section -->
+        <section id="scholarships">
+            <h2>Available Scholarships</h2>
+            <table>
+                <tr>
+                    <th>Scholarship Name</th>
+                    <th>Description</th>
+                    <th>Eligibility</th>
+                    <th>Deadline</th>
+                    <th>Amount</th>
+                    <th>Apply</th>
+                </tr>
+                <tr>
+                    <td>Academic Excellence Award</td>
+                    <td>For students with high GPA.</td>
+                    <td>3.5 GPA or higher</td>
+                    <td>Dec 15, 2024</td>
+                    <td>$5000</td>
+                    <td><a href="#" onclick="showSection('apply')">Apply Now</a></td>
+                </tr>
+                <tr>
+                    <td>Community Service Grant</td>
+                    <td>For students involved in community service.</td>
+                    <td>Must log 50+ service hours</td>
+                    <td>Jan 10, 2025</td>
+                    <td>$2000</td>
+                    <td><a href="#" onclick="showSection('apply')">Apply Now</a></td>
+                </tr>
+                <tr>
+                    <td>STEM Innovation Scholarship</td>
+                    <td>For students pursuing STEM fields.</td>
+                    <td>Major in STEM fields</td>
+                    <td>Feb 28, 2025</td>
+                    <td>$3000</td>
+                    <td><a href="#" onclick="showSection('apply')">Apply Now</a></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Application Section -->
+        <section id="apply">
+            <h2>Application Form</h2>
+            <div id="applicationFormContainer">
+                <form id="applicationForm">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="scholarship">Select Scholarship:</label>
+                    <select id="scholarship" name="scholarship" required>
+                        <option value="academic_excellence">Academic Excellence Award</option>
+                        <option value="community_service">Community Service Grant</option>
+                        <option value="stem_innovation">STEM Innovation Scholarship</option>
+                    </select>
+
+                    <label for="documents">Upload Documents:</label>
+                    <input type="file" id="documents" name="documents" required multiple>
+
+                    <button type="submit">Submit Application</button>
+                </form>
+                <p id="formResponse"></p>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <h2>Your Dashboard</h2>
+
+            <!-- Dashboard Summary -->
+            <div id="dashboardSummary">
+                <h3>Dashboard Summary</h3>
+                <ul>
+                    <li>Total Applications: <span id="totalApplications">0</span></li>
+                    <li>Under Review: <span id="underReview">0</span></li>
+                    <li>Accepted: <span id="accepted">0</span></li>
+                    <li>Rejected: <span id="rejected">0</span></li>
+                </ul>
+            </div>
+
+            <!-- Application Status Section -->
+            <div id="applicationStatus">
+                <h3>Your Application Status</h3>
+                <table>
+                    <tr>
+                        <th>Scholarship Name</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <td>Academic Excellence Award</td>
+                        <td><span style="color: green;">Accepted</span></td>
+                        <td>July 15, 2024</td>
+                        <td><button onclick="viewDetails('academic_excellence')">View Details</button></td>
+                    </tr>
+                    <tr>
+                        <td>Community Service Grant</td>
+                        <td><span style="color: orange;">Under Review</span></td>
+                        <td>August 10, 2024</td>
+                        <td><button onclick="viewDetails('community_service')">View Details</button></td>
+                    </tr>
+                    <tr>
+                        <td>STEM Innovation Scholarship</td>
+                        <td><span style="color: red;">Rejected</span></td>
+                        <td>August 15, 2024</td>
+                        <td><button onclick="viewDetails('stem_innovation')">View Details</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Notifications Section -->
+            <div id="notifications">
+                <h3>Notifications</h3>
+                <ul>
+                    <li>Your application for the Community Service Grant is under review.</li>
+                    <li>You have a new message from the scholarship committee.</li>
+                </ul>
+            </div>
+
+            <!-- Recent Updates Section -->
+            <div id="recentUpdates">
+                <h3>Recent Updates</h3>
+                <ul>
+                    <li>Application deadlines have been updated for STEM scholarships.</li>
+                    <li>New scholarships have been added for the upcoming semester.</li>
+                </ul>
+            </div>
+
+            <!-- Dashboard Actions Section -->
+            <div id="dashboardActions">
+                <h3>Actions</h3>
+                <button onclick="showSection('apply')">Submit New Application</button>
+                <button onclick="showSection('scholarships')">View Scholarships</button>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>If you have any questions, feel free to contact our support team.</p>
+            <p>Email: support@scholarshipsystem.com</p>
+            <p>Phone: +1-800-123-4567</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Scholarship Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to show the selected section
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll("section");
+            sections.forEach(section => {
+                section.style.display = "none";
+            });
+            document.getElementById(sectionId).style.display = "block";
+        }
+
+        // Login form submission handler
+        document.getElementById("loginFormElement").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+
+            // Dummy login validation
+            if (email === "student@example.com" && password === "password123") {
+                alert("Login successful! Redirecting to your dashboard...");
+                showSection('dashboard');
+                updateDashboard();
+            } else {
+                document.getElementById("loginMessage").innerText = "Invalid email or password. Please try again.";
+            }
+        });
+
+        // Form submission handler for the application form
+        document.getElementById("applicationForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const scholarship = document.getElementById("scholarship").value;
+            const documents = document.getElementById("documents").files;
+
+            // Display response message
+            const responseMessage = `Thank you, ${name}! Your application for the ${scholarship} has been submitted.`;
+            document.getElementById("formResponse").innerText = responseMessage;
+
+            // Clear form fields (optional)
+            document.getElementById("applicationForm").reset();
+
+            // Update dashboard statistics
+            updateDashboard();
+        });
+
+        // Function to update dashboard statistics
+        function updateDashboard() {
+            // Here you can update the application statistics based on the submitted applications.
+            // For demo purposes, let's increment total applications and under review count.
+            let totalApplications = parseInt(document.getElementById("totalApplications").innerText) + 1;
+            let underReview = parseInt(document.getElementById("underReview").innerText) + 1;
+
+            document.getElementById("totalApplications").innerText = totalApplications;
+            document.getElementById("underReview").innerText = underReview;
+        }
+
+        // Function to view application details (placeholder function)
+        function viewDetails(scholarshipId) {
+            alert(`Viewing details for ${scholarshipId}`);
+            // You can implement a more detailed view here
+        }
+    </script>
+</body>
+
+</html>
